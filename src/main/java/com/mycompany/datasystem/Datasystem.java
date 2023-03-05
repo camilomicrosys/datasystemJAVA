@@ -4,6 +4,7 @@
 
 package com.mycompany.datasystem;
 
+import ventanas.Administrador;
 import ventanas.Login;
 
 /**
@@ -14,9 +15,11 @@ public class Datasystem {
 
     public static void main(String[] args) {
        
-         //esto es para motrar el formulario visual de login
+         /*esto es para motrar el formulario visual de login*/
         Login ventana= new Login();
        ventana.show();
 
+
+      
     }
 }

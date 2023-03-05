@@ -5,8 +5,13 @@
 package ventanas;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import java.sql.*;
+//creamos un pack llamado clases y alli metimos la conexion por eso lo importamos aca
+import clases.Conexion;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,6 +19,9 @@ import javax.swing.ImageIcon;
  */
 public class Login extends javax.swing.JFrame {
 
+    //se crean las variables estaticas para poder enviar datos entre interfaces en este caso solo el user
+    public static String user="";
+    String pass="";
     /**
      * Creates new form Login
      */
@@ -47,6 +55,15 @@ public class Login extends javax.swing.JFrame {
         
     }
 
+    
+    
+    /*icono de la ventanita donde salia la tasa de cafe aca hacemos polimorfismo de la clase pura esto no me funciono pero es el proceso
+   @Override
+    public Image getIconImage(){
+        Image retValue= Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagenes/icon.png"));
+        return retValue;
+    }
+    */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,11 +77,12 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txt_user = new javax.swing.JTextField();
-        btnLogin = new javax.swing.JButton();
         txt_password = new javax.swing.JPasswordField();
+        btnLogin = new javax.swing.JButton();
         img_fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 220, 190));
 
@@ -78,15 +96,94 @@ public class Login extends javax.swing.JFrame {
         txt_user.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 250, -1));
 
-        btnLogin.setText("Login");
-        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 470, -1, -1));
-
         txt_password.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txt_password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_passwordActionPerformed(evt);
+            }
+        });
         getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 430, 250, -1));
+
+        btnLogin.setText("Login");
+        btnLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 470, 70, -1));
         getContentPane().add(img_fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 400, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        //estas son la variables que declaramos al inicio de la clase y acceden al valor de los inputs
+        user=txt_user.getText().trim();
+        pass=txt_password.getText().trim();
+        
+        //si alguno esta vacio
+        if(user.equals("")|| pass.equals("")){
+            JOptionPane.showMessageDialog(rootPane,"el password y usuario deben estar diligenciados");
+        }else{
+                    //validamos login
+                    try{
+                                    //creamos el objeto de conexion 
+                                   Connection cn=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse
+                                    PreparedStatement pst = cn.prepareStatement("SELECT tipo_nivel, estatus FROM usuarios WHERE username = ? AND password = ?");
+                                    pst.setString(1, user);
+                                    pst.setString(2, pass);
+                                    // ejecutamos el query
+                                    ResultSet rs = pst.executeQuery();
+                                //validamos si encontro coincidencias
+                                if(rs.next()){
+
+                                        //creamos valirable y con getString asignamos lo que vienen en la columna de la db
+                                        String tipo_nivel=rs.getString("tipo_nivel");
+                                        String estatus=rs.getString("estatus");
+                                       //validaos que roll tiene el usuario que se esta logueando
+                                       if(tipo_nivel.equals("administrador")&& estatus.equals("activo")){
+                                         //esto lo que hace es que destruye en el sistema operativo la intefaz d elogin para poder interactuar con la siguiente vista de formulario
+                                         dispose();
+                                         //abrimos interface de administrador
+                                         new Administrador().setVisible(true);
+                                           
+                                       }else if(tipo_nivel.equals("capturista")&& estatus.equals("activo")){
+                                            //esto lo que hace es que destruye en el sistema operativo la intefaz d elogin para poder interactuar con la siguiente vista de formulario
+                                         dispose();
+                                         //abrimos interface de Capturista
+                                         new Capturista().setVisible(true);
+                                           
+                                       }else if(tipo_nivel.equals("tecnico")&& estatus.equals("activo")){
+                                         //esto lo que hace es que destruye en el sistema operativo la intefaz d elogin para poder interactuar con la siguiente vista de formulario
+                                         dispose();
+                                         //abrimos interface de Tecnico
+                                         new Tecnico().setVisible(true);
+                                       }
+
+                                    //validamos que hacer dependiendo tipo de rol
+                                }else{
+                                    //le decimos que no existe y limipamos  los datos
+                                      JOptionPane.showMessageDialog(rootPane,"datos incorrectos o, usuario no existe en el sistema USUARIO="+user+" PASS="+pass);
+                                      txt_password.setText("");
+                                      txt_user.setText("");
+                                }
+                       //OBTENEMOS EL ERROR DE LA DB 
+                    }catch(SQLException e){
+
+                        System.err.println("Error en el boton acceder "+e);
+                        JOptionPane.showMessageDialog(rootPane,"error al inicial sesion contacte al administrador");
+
+                    }
+        }
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void txt_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_passwordActionPerformed
 
     /**
      * @param args the command line arguments
