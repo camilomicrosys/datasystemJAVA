@@ -173,7 +173,7 @@ public class Login extends javax.swing.JFrame {
                        //OBTENEMOS EL ERROR DE LA DB 
                     }catch(SQLException e){
 
-                        System.err.println("Error en el boton acceder "+e);
+                        System.err.println("Error en el boton acceder login "+e);
                         JOptionPane.showMessageDialog(rootPane,"error al inicial sesion contacte al administrador");
 
                     }

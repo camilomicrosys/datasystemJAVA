@@ -4,25 +4,84 @@
  */
 package ventanas;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
+import java.sql.*;
+import  clases.Conexion;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.WindowConstants;
+import java.awt.Image;
+import static ventanas.Login.user;
 /**
  *
  * @author Lenovo
  */
 public class Administrador extends javax.swing.JFrame {
+    //creamos variable y la estatica que  son als que puden viajar entre formularios de vistas
+    String user,user_name;
+    public static int session_usuario;
+    
+    
 
     /**
      * Creates new form Administrador
      */
     public Administrador() {
         initComponents();
-         
+        //aca recuperamos los datos de la ventana login  en los constructores es que podemos trabajar con ellos
+        //aca decimos que en la user que cree yo en esta clase sea igual a la interface login .user que esta en la case login declarada asi pasamos de alla aca
+        user=Login.user;
+        session_usuario=1;
+        //TAMANP DE PANTALLA
+        setSize(650,430);
+        //NO PUEDA CAMBIARLAS
+        setResizable(false);
+        
         //titulo de la intefaz de login
-        setTitle("Panel Adminitrador");
+        setTitle("Panel Adminitrador sesion de -"+user);
         //centrar la interface en la pantalla
         setLocationRelativeTo(null);
+        
+        //matamos proceso cuando se loguean destruimos la ejecucion de login para que solo siga esta ventana actual funcionando y ya no se ejecutaria en segundo plano
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        //ponemos el fondo a la pantalla
+         ImageIcon wallpaper= new ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\wallpaperPrincipal.jpg");
+        //ACA LE DECIMOS QUE jLabel_walpaper ESE NOMBRE DE VARIABLE QUE FUE LA QUE PUSIMOS EN EL FORMULARIO AL LABEL PARA EL FONO QUE COJA EL LARGO Y ANCHO Y LO ACOPLE A ESTA IMAGEN O QUE LA IMAGEN SE ACOMODE A ESAS MEDIDAS QUE NO SE VEA MAS GRANDE O AMS FEA SINO ACOMODADA
+        Icon icono= new ImageIcon(wallpaper.getImage().getScaledInstance(fondoAdmin.getWidth(),fondoAdmin.getHeight(),Image.SCALE_DEFAULT));
+       //AHORA LE DECIMOS QUE A ESE LABEL LE PONGA LA CONFIGURACION QUE HICIMOS EN LA LINEA ANTERIOR
+        fondoAdmin.setIcon(icono);
+        //esta se pone para que aplique los cambios
+        this.repaint();
+      
+        //aca nos conectamos a la db para validar que usuario es el que ah inicado sesion en el sistema
+        try{
+              //creamos el objeto de conexion 
+                                   Connection cn=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse
+                                    String sql = "SELECT nombre_usuario FROM usuarios WHERE username = ?";
+                                    System.out.println("Consulta SQL: " + sql + ", Usuario: " + user);
+                                    PreparedStatement pst = cn.prepareStatement(sql);
+                                    pst.setString(1, user);
+                                    ResultSet rs = pst.executeQuery();
+                                    
+                                    //validamos que haya datos
+                                    if(rs.next()){
+                                       user_name=rs.getString("nombre_usuario");
+                                       txt_nombre_user.setText(user_name);
+                                        System.err.println("el nombre del user es "+user_name);
+                                    }else{
+                                        System.out.println("no encontro usuario en rs.");
+                                    }
+            
+        }catch (SQLException e) {
+            System.err.println("Error al ejecutar el query: " + e.getMessage());
+            e.printStackTrace();
+            }
+        
+        
+        
+        
     }
 
     /**
@@ -43,19 +102,19 @@ public class Administrador extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnAcercade = new javax.swing.JButton();
-        fondoAdmin = new javax.swing.JLabel();
         btnRegistarUser1 = new javax.swing.JButton();
         btnGestionarUser1 = new javax.swing.JButton();
         btnCreatividad1 = new javax.swing.JButton();
         btnCapturista1 = new javax.swing.JButton();
         btnTecnico1 = new javax.swing.JButton();
+        fondoAdmin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txt_nombre_user.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         txt_nombre_user.setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(txt_nombre_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        getContentPane().add(txt_nombre_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, 15));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Registrar usuario");
@@ -82,13 +141,17 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, -1, -1));
 
         jLabel7.setText("Desarrollado por: Camilo Agudelo ©");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 400, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 400, -1, -1));
 
         btnAcercade.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\geekipedia.png")); // NOI18N
         getContentPane().add(btnAcercade, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 110, 90));
-        getContentPane().add(fondoAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 0, 650, 430));
 
         btnRegistarUser1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\addUser.png")); // NOI18N
+        btnRegistarUser1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistarUser1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnRegistarUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 110, 90));
 
         btnGestionarUser1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\informationuser.png")); // NOI18N
@@ -102,9 +165,18 @@ public class Administrador extends javax.swing.JFrame {
 
         btnTecnico1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\tecnico.png")); // NOI18N
         getContentPane().add(btnTecnico1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 240, 110, 90));
+        getContentPane().add(fondoAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 0, 680, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegistarUser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistarUser1ActionPerformed
+        // TODO add your handling code here:
+        //ABRIMOS LA INTEFACE DEL REGISTER USER creando un objeto de la interface registeruser
+        RegistarUser registrarusuarios= new RegistarUser();
+        //mostramos la interface
+        registrarusuarios.setVisible(true);
+    }//GEN-LAST:event_btnRegistarUser1ActionPerformed
 
     /**
      * @param args the command line arguments
