@@ -5,10 +5,13 @@
 package ventanas;
 import java.sql.*;
 import  clases.Conexion;
+import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.WindowConstants;
 import java.awt.Image;
+import javax.swing.JOptionPane;
+import static ventanas.Login.user;
 
 /**
  *
@@ -98,7 +101,6 @@ public class RegistarUser extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, -1, -1));
 
         txt_username.setBackground(new java.awt.Color(204, 255, 255));
-        txt_username.setForeground(new java.awt.Color(255, 255, 255));
         txt_username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 210, 20));
 
@@ -108,7 +110,6 @@ public class RegistarUser extends javax.swing.JFrame {
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, -1));
 
         txt_email.setBackground(new java.awt.Color(204, 255, 255));
-        txt_email.setForeground(new java.awt.Color(255, 255, 255));
         txt_email.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txt_email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,7 +124,6 @@ public class RegistarUser extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, -1, -1));
 
         txt_telefono.setBackground(new java.awt.Color(204, 255, 255));
-        txt_telefono.setForeground(new java.awt.Color(255, 255, 255));
         txt_telefono.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 210, 20));
 
@@ -133,12 +133,10 @@ public class RegistarUser extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         txt_nombres4.setBackground(new java.awt.Color(204, 255, 255));
-        txt_nombres4.setForeground(new java.awt.Color(255, 255, 255));
         txt_nombres4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(txt_nombres4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 210, 20));
 
         txt_pas.setBackground(new java.awt.Color(204, 255, 255));
-        txt_pas.setForeground(new java.awt.Color(255, 255, 255));
         txt_pas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txt_pas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,7 +146,12 @@ public class RegistarUser extends javax.swing.JFrame {
         getContentPane().add(txt_pas, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 220, -1));
 
         btnagregarUsers.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\add.png")); // NOI18N
-        getContentPane().add(btnagregarUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 200, -1, -1));
+        btnagregarUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregarUsersActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnagregarUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 200, -1, -1));
 
         cmb_niveles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", "capturista", "tecnico" }));
         getContentPane().add(cmb_niveles, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
@@ -173,6 +176,136 @@ public class RegistarUser extends javax.swing.JFrame {
     private void txt_pasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_pasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_pasActionPerformed
+
+    private void btnagregarUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarUsersActionPerformed
+        // TODO add your handling code here:
+        
+       //obtenemos los datos del formulario
+       int permisos_cmb,validacion=0;
+       
+       String nombre,email,telefono,username,pass,permisos_string;
+       
+       nombre=txt_nombres4.getText().trim();
+       email=txt_email.getText().trim();
+       username=txt_username.getText().trim();
+       pass=txt_pas.getText().trim();
+       telefono=txt_telefono.getText().trim();
+       //esto son los select y nos entrega los datos de la lista en numeros y el primero de la lista es 0 luego 1 luego 2 yo le sumo 1 para que admin sea 1 y no cero ya si sucecivamente
+       permisos_cmb=cmb_niveles.getSelectedIndex()+1;
+       
+       //ahora validamos campos para qeu no esten vacios, si esta vacio le ponemos al input un backgound
+       if(email.equals("")){
+           txt_email.setBackground(Color.red);
+           //y esta la ponemos para saber si hay error es muy cheverre aca nos evitamos un array push ya que vamos sumando errores a validacion
+           validacion++;
+       }
+       
+        if(username.equals("")){
+           txt_username.setBackground(Color.red);
+           //y esta la ponemos para saber si hay error es muy cheverre aca nos evitamos un array push ya que vamos sumando errores a validacion
+           validacion++;
+       }
+       if(pass.equals("")){
+           txt_pas.setBackground(Color.red);
+           //y esta la ponemos para saber si hay error es muy cheverre aca nos evitamos un array push ya que vamos sumando errores a validacion
+           validacion++;
+       }
+       if(nombre.equals("")){
+           txt_nombres4.setBackground(Color.red);
+           //y esta la ponemos para saber si hay error es muy cheverre aca nos evitamos un array push ya que vamos sumando errores a validacion
+           validacion++;
+       }
+       
+       if(telefono.equals("")){
+           txt_telefono.setBackground(Color.red);
+           //y esta la ponemos para saber si hay error es muy cheverre aca nos evitamos un array push ya que vamos sumando errores a validacion
+           validacion++;
+       }
+       
+       
+       //ahora asignamos el rol de acuerdo al select que viene de numero
+       if(permisos_cmb==1){
+           permisos_string="administrador";
+       }else if(permisos_cmb==2){
+           permisos_string="capturista";
+       }else{
+          permisos_string="tecnico"; 
+       }
+       
+       //validamos que el usaurio que estan mandando no exista en la db
+       try{
+                                   //creamos el objeto de conexion 
+                                   Connection cn=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse
+                                    PreparedStatement pst = cn.prepareStatement("SELECT username FROM usuarios WHERE username = ?");
+                                    pst.setString(1, username);
+                                    
+                                    // ejecutamos el query
+                                    ResultSet rs = pst.executeQuery();
+                                    //hay dato es por que existe
+                                    if(rs.next()){
+                                        txt_username.setBackground(Color.red);
+                                        JOptionPane.showMessageDialog(rootPane, "el usuario "+username+" ya se encuentra registardo en nuestro sistema por avor cambia el user");
+                                        //cerramos conexion de la db
+                                        cn.close();
+                                        //si no existe hacemos el registro en la db
+                                    }else{
+                                                //cerramos la conexion de la consulta anterior para crear un query con conexion nueva
+                                                 cn.close();
+                                                //esta es la inicial que cada que habia error le poniamos ++ 1 mas si es =0 no hay error y pyede resgistrar user
+                                                if(validacion==0){
+                                                    
+                                                        try{
+                                                                   //creamos el objeto de conexion cada que creamos una nueva conexion y cerramos otra se debe cambiar la variable cn eneste caso pusimos cn2 al igual que el pst le pusimos pst2
+                                                                   Connection cn2=Conexion.conectar();
+                                                                   // validamos si existe el usuario que trata de loguearse
+                                                                   PreparedStatement pst2 = cn2.prepareStatement("INSERT INTO usuarios values(?,?,?,?,?,?,?,?,?)");
+                                                                   //mandamos los datos pusimos 8 signos ? que son 8 columas de la db a la primera que es id mandamos 0 opara que ya el sistema asigne su auto increment
+                                                                    pst2.setInt(1, 0);
+                                                                    pst2.setString(2, nombre);
+                                                                    pst2.setString(3, email);
+                                                                    pst2.setString(4, telefono);
+                                                                    pst2.setString(5, username);
+                                                                    pst2.setString(6, pass);
+                                                                    pst2.setString(7, permisos_string);
+                                                                    pst2.setString(8, "activo");
+                                                                    pst2.setString(9, user);
+                                                                    // ejecutamos el query de insercion
+                                                                    pst2.executeUpdate();
+                                                                    //cerramos la conexion
+                                                                    cn2.close();
+                                                                    //llamamos al metodo que creamos de limpiar campos para que pinte un backrong verde y limpie campos
+                                                                    limpiarCampos();
+                                                                    //en el codigo anterior limpiamos los campos y en este ponemos el backgron den verde en los campos
+                                                                    txt_email.setBackground(Color.green);
+                                                                    txt_nombres4.setBackground(Color.green);
+                                                                    txt_username.setBackground(Color.green);
+                                                                    txt_pas.setBackground(Color.green);
+                                                                    txt_telefono.setBackground(Color.green);
+                                                                    
+                                                                    JOptionPane.showMessageDialog(rootPane,"Usuario agregado correctamente");
+                                                                    //le decimos que esta interface la cierre para reducisir recursos del pc
+                                                                    this.dispose();
+                                                        }catch(SQLException e){
+                                                               System.err.println("Error todos los campos estan bien para agregar usuario pero entrega error "+e);
+                                                               JOptionPane.showMessageDialog(rootPane,"error al crear cliente ");
+                                                        }
+
+                                                }else{
+                                                    
+                                                }
+                                           
+                                    }
+         //capturamos la excepcion sql                               
+       }catch(SQLException e){
+           
+                        System.err.println("Error en el boton crear usuario "+e);
+                        JOptionPane.showMessageDialog(rootPane,"error al crear nuevo usaurio contacte al administrador");
+       }
+       
+       
+       
+    }//GEN-LAST:event_btnagregarUsersActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,6 +341,19 @@ public class RegistarUser extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    //creamos la funcion que limpiara los campos cuando se registre un susuario exitosamente
+    public void limpiarCampos(){
+        txt_email.setText("");
+        txt_nombres4.setText("");
+        txt_username.setText("");
+        txt_pas.setText("");
+        txt_telefono.setText("");
+        //la interface se cierra y al abrirla ya el select sale sempre en admin es lo que debe ser pero si no se cerrara con este codigo vlvemos a poner en el select ela dmin de primero
+        //0 equivale administrador 1 capturista 2 tecnico ya que asi estan  en orden en la lista y cada item es como si fuese un array
+        cmb_niveles.setSelectedIndex(0);
+    }   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnagregarUsers;
