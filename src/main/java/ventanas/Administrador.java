@@ -155,6 +155,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(btnRegistarUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 110, 90));
 
         btnGestionarUser1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\informationuser.png")); // NOI18N
+        btnGestionarUser1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionarUser1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnGestionarUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 110, 90));
 
         btnCreatividad1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\creatividad.png")); // NOI18N
@@ -177,6 +182,14 @@ public class Administrador extends javax.swing.JFrame {
         //mostramos la interface
         registrarusuarios.setVisible(true);
     }//GEN-LAST:event_btnRegistarUser1ActionPerformed
+
+    private void btnGestionarUser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarUser1ActionPerformed
+        
+        //ABRIMOS LA INTEFACE DEL GestionaUser creando un objeto de la interface Gestionar User
+        GestionUser gestionarusers= new GestionUser();
+        //mostramos la interface
+        gestionarusers.setVisible(true);
+    }//GEN-LAST:event_btnGestionarUser1ActionPerformed
 
     /**
      * @param args the command line arguments

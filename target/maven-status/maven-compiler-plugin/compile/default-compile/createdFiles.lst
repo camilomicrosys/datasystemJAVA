@@ -1,5 +1,12 @@
+ventanas\GestionUser$1.class
 ventanas\Tecnico.class
+ventanas\GestionUser.class
+ventanas\RegistarUser$1.class
 com\mycompany\datasystem\Datasystem.class
+ventanas\RegistarUser.class
+ventanas\RegistarUser$2.class
+ventanas\Administrador$3.class
+ventanas\RegistarUser$3.class
 ventanas\Tecnico$1.class
 ventanas\Capturista$1.class
 ventanas\Login$3.class
@@ -8,6 +15,7 @@ ventanas\Login$1.class
 ventanas\Administrador$2.class
 ventanas\Capturista.class
 ventanas\Administrador$1.class
+ventanas\RegistarUser$4.class
 ventanas\Login$2.class
 ventanas\Login.class
 ventanas\Administrador.class
