@@ -22,7 +22,7 @@ import static ventanas.Login.user;
 public class GestionUser extends javax.swing.JFrame {
     //creamos variable y la estatica que  son als que puden viajar entre formularios de vistas
      String user;
-     //ESTA SERIA PARA PODER MANDAR DATOS ENTRE INTERFACES
+     //ESTA SERIA PARA PODER MANDAR DATOS ENTRE INTERFACES esta es para mandarla luego cuando clicken en latabla algun usuario se abrira la interface de info de usuario y alla mandamos esta esta la diligenciamos mas abajo cuando obtenemos el nombre de este usuario
      public static String user_update="";
      //creamos el objeto del datatable esto lo que nos va a permitir es modificar datos de la tabla a su interior
      DefaultTableModel model=new DefaultTableModel();
@@ -99,8 +99,25 @@ public class GestionUser extends javax.swing.JFrame {
             System.err.println("Error al llenar tabla en gestion de users: " + e.getMessage());
             e.printStackTrace();
             }
-        
-        
+         //esto es para obtener los datos del usuario que se clikee en el front de la tabla
+            table_usuarios.addMouseListener(new MouseAdapter(){
+                  @Override  
+                  public void mouseClicked(MouseEvent e){
+                //obtenemos cual es la fila que se clikeo
+                      int fila_point=table_usuarios.rowAtPoint(e.getPoint());
+                      //ponemos 2 quemado ya que trabajaremos con la columna de nombre nosotros cuando clicken cogemos e nombre
+                      int columna_point=2;
+                       //no pueden haber negativos y la primera es cero ya que son array
+                            if(fila_point>-1){
+                                user_update=(String)model.getValueAt(fila_point, columna_point);
+                                //creamos el objeto de la otra interfce donde veremos la info de este usuario
+                                InformacionUsuario informacion_usaurio= new InformacionUsuario();
+                                // y abrimos esa nueva interface
+                                informacion_usaurio.setVisible(true);
+                            }
+
+                    }
+          });
          
 
     }
