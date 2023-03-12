@@ -4,7 +4,7 @@
 
 package com.mycompany.datasystem;
 
-import ventanas.Administrador;
+
 import ventanas.Login;
 
 /**
