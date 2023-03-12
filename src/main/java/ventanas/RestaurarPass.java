@@ -99,11 +99,9 @@ public class RestaurarPass extends javax.swing.JFrame {
         jLabel3.setText("Password:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
-        pswordconfirm.setText("jPasswordField1");
         pswordconfirm.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(pswordconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 250, -1));
 
-        passwordchange.setText("jPasswordField1");
         passwordchange.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         getContentPane().add(passwordchange, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 240, -1));
 
