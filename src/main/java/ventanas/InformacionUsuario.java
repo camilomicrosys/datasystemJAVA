@@ -10,12 +10,14 @@ import javax.swing.ImageIcon;
 import java.sql.*;
 //creamos un pack llamado clases y alli metimos la conexion por eso lo importamos aca
 import clases.Conexion;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 //variable creada en login statica o de sesion
 import static ventanas.Login.user;
 //importamos la variable que anda en interfaces que viene de gestionaruser
 import static  ventanas.GestionUser.user_update;
+
 /**
  *
  * @author Lenovo
@@ -180,6 +182,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         getContentPane().add(txt_infonoemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 180, -1));
 
         txt_infonombre4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txt_infonombre4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_infonombre4ActionPerformed(evt);
+            }
+        });
         getContentPane().add(txt_infonombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 180, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -202,6 +209,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         getContentPane().add(btninfouserrestaurarpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 310, 180, 30));
 
         btninfouseractualizar1.setText("Actualizar");
+        btninfouseractualizar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btninfouseractualizar1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btninfouseractualizar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 260, 180, 30));
 
         labelinfouserregistradopor.setForeground(new java.awt.Color(255, 255, 255));
@@ -214,6 +226,129 @@ public class InformacionUsuario extends javax.swing.JFrame {
     private void jComboBoxestadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxestadosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxestadosActionPerformed
+
+    private void btninfouseractualizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninfouseractualizar1ActionPerformed
+        // recogemos los datos del formulario para luego insertarlos en la db
+        //que son los enteros que nos da la lista desplegable
+        int permisos,status,validacion=0;
+        //aca pnemos el status y  permisos string para validar si permisos es 1 asignamos a permiso string administrador textual
+        String nombre,email,telefono,username,pass,permisos_string="",estatus_string="";
+        
+        nombre=txt_infonombre4.getText().trim();
+        telefono=txt_infotelefono.getText().trim();
+        username=txt_infousername.getText().trim();
+        email=txt_infonoemail.getText().trim();
+        //le ponemos el +1 ya que inician en cero las opciones que me dal el listq ue es un array que me lo devuelven las listas
+        status=jComboBoxestados.getSelectedIndex()+1;
+        permisos=jComboBoxniveles.getSelectedIndex()+1;
+        // validamos que no venga ningun dato vacio
+        if(email.equals("")){
+            txt_infonoemail.setBackground(Color.red);
+            validacion=validacion+1;
+        }
+         if(telefono.equals("")){
+            txt_infotelefono.setBackground(Color.red);
+            validacion=validacion+1;
+        }
+          if(nombre.equals("")){
+            txt_infonombre4.setBackground(Color.red);
+            validacion=validacion+1;
+        }
+        
+           if(username.equals("")){
+            txt_infousername.setBackground(Color.red);
+            validacion=validacion+1;
+        }
+        
+        //si hay errores
+        if(validacion==0){
+           
+              //obtenemos los datos de la lista estado y permisos
+              if(permisos==1){
+                  permisos_string="administrador";
+              }else if(permisos==2){
+                  permisos_string="capturista";
+              }else{
+                  permisos_string="tecnico";
+              }
+            
+              //ahora para el estatus
+              if(status==1){
+                  estatus_string="activo";
+              }else{
+                 estatus_string="inactivo"; 
+              }
+              
+              //validamos que el usuario no exista el username que se insertara
+               try{
+                                 //creamos el objeto de conexion 
+                                   Connection cn2=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse le decimos que seleccione todo donde nombre de usuario sea el 
+                                  //que estamos mandando pero no me tome el del id que estamos mandando por si encuentra ese user name con este id que se 
+                                  //supone no estariamos actualizando el user name y estariamos mandando el mismo que tiene
+                                    String sql2 = "SELECT username FROM usuarios WHERE username = ? AND NOT id=?";
+                                    
+                                    PreparedStatement pst2 = cn2.prepareStatement(sql2);
+                                    pst2.setString(1, username);
+                                    pst2.setInt(2, id);
+                                    ResultSet rs = pst2.executeQuery();
+                                    
+                                    //si hay usaurios es por que esto retorna datos entonces le decimos que cambie usaurio y lo pintamos en rojo y si no actualizamos los datos
+                                    if(rs.next()){
+                                      txt_infousername.setBackground(Color.red);
+                                      System.out.println("el Usuario ya existe por favor cambia tu usuario");
+                                      JOptionPane.showMessageDialog(rootPane, "Usuario ya esta registrado, por favor cambialo");
+                                      cn2.close();
+                                      //si esta disponible hacemos la actualizacion en db
+                                    }else{
+                                         //creamos el objeto de conexion 
+                                   Connection cn3=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse le decimos que seleccione todo donde nombre de usuario sea el 
+                                  //que estamos mandando pero no me tome el del id que estamos mandando por si encuentra ese user name con este id que se 
+                                  //supone no estariamos actualizando el user name y estariamos mandando el mismo que tiene
+                                    String sql3 = "UPDATE usuarios set nombre_usuario=?,email=?,telefono=?,username=?,tipo_nivel=?,estatus=?  WHERE  id=?";
+                                    
+                                    PreparedStatement pst3 = cn3.prepareStatement(sql3);
+                                    pst3.setString(1,nombre);
+                                    pst3.setString(2,email);
+                                    pst3.setString(3,telefono);
+                                    pst3.setString(4,username);
+                                    pst3.setString(5,permisos_string);
+                                    pst3.setString(6,estatus_string);
+                                    pst3.setInt(7, id);
+                                   
+                                    pst3.executeUpdate();
+                                    cn3.close();
+                                    
+                                    JOptionPane.showMessageDialog(rootPane, "Actualizacion exitosa");
+                                        
+                                        
+                                    }
+                                    
+                                    //cerramos la conexion
+                                    cn2.close();
+            
+                }catch (SQLException e) {
+                     System.err.println("Error al actualizar info usuario panel InformacionUsuario: " + e.getMessage());
+                     e.printStackTrace();
+            }
+              
+              
+              
+              
+            
+            
+        }else{
+          JOptionPane.showMessageDialog(rootPane, "Debes diligenciar todos los datos");
+        }
+        
+        
+        
+    }//GEN-LAST:event_btninfouseractualizar1ActionPerformed
+
+    private void txt_infonombre4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_infonombre4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_infonombre4ActionPerformed
 
     /**
      * @param args the command line arguments
