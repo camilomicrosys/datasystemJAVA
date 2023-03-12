@@ -26,8 +26,9 @@ public class InformacionUsuario extends javax.swing.JFrame {
     //variable de sesion de login
     String user="";
     String user_update="";
-    //el id de el que vamos actualizar
-    int id;
+    //el id de el que vamos actualizar, yo lo quice declarar como estatico  para cuando le den clic en reestablecer pass que se abre otra interface 
+    //ya me llegue alla tambien el id como user update es global no aguanta hacer un query para obtener ese id entonces desde aca lo envio
+    public static int id;
 
     /**
      * Creates new form InformacionUsuario
@@ -206,6 +207,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         getContentPane().add(jComboBoxniveles, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, -1, -1));
 
         btninfouserrestaurarpass.setText("Restaurar password");
+        btninfouserrestaurarpass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btninfouserrestaurarpassActionPerformed(evt);
+            }
+        });
         getContentPane().add(btninfouserrestaurarpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 310, 180, 30));
 
         btninfouseractualizar1.setText("Actualizar");
@@ -349,6 +355,15 @@ public class InformacionUsuario extends javax.swing.JFrame {
     private void txt_infonombre4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_infonombre4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_infonombre4ActionPerformed
+
+    private void btninfouserrestaurarpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninfouserrestaurarpassActionPerformed
+        
+        //mostramos la nueva ventanita que tendra la vista de pass y confirm pass
+        //ABRIMOS LA INTEFACE DEL GestionaUser creando un objeto de la interface Gestionar User
+        RestaurarPass restaurarpassswords= new RestaurarPass();
+        //mostramos la interface
+        restaurarpassswords.setVisible(true);
+    }//GEN-LAST:event_btninfouserrestaurarpassActionPerformed
 
     /**
      * @param args the command line arguments
