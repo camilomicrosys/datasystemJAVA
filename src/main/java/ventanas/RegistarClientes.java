@@ -4,12 +4,20 @@
  */
 package ventanas;
 
+import clases.Conexion;
+import java.awt.Color;
 import java.awt.Image;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 //importamos la variable de sesion que viene por login
 import static ventanas.Login.user;
+ //importamos el nombre del usuario logueado que es quien va a registarar este cliente y viene desde la vista capturista
+import static ventanas.Capturista.nombre_usuario_logueado;
 /**
  *
  * @author Lenovo
@@ -17,12 +25,16 @@ import static ventanas.Login.user;
 public class RegistarClientes extends javax.swing.JFrame {
     //la variable estatica de sesion que viene desde login 
     String user_logueado;
+    //esta es para meter la variable del nombre del suario que esta logueado para colocarlo al crear el cliente como el creador
+    String nombre_user_logueado;
 
     /**
      * Creates new form RegistarClientes
      */
     public RegistarClientes() {
         initComponents();
+         //esta es para meter la variable del nombre del suario que esta logueado para colocarlo al crear el cliente como el creador
+         nombre_user_logueado= Capturista.nombre_usuario_logueado;
         
          //TAMANP DE PANTALLA
          setSize(674, 351);
@@ -53,6 +65,9 @@ public class RegistarClientes extends javax.swing.JFrame {
         fondoregistarclientes.setIcon(icono);
         //esta se pone para que aplique los cambios
         this.repaint();
+        
+        
+      
         
         
         
@@ -135,14 +150,97 @@ public class RegistarClientes extends javax.swing.JFrame {
 
     private void btncrearclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearclienteActionPerformed
         // TODO add your handling code here:
-        
-        
          //matamos proceso cuando se loguean destruimos la ejecucion de login para que solo siga esta ventana actual funcionando y ya no se ejecutaria en segundo plano
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //evitamos que al cerar este modal que no es el sistema pricipal evitamos que se nos cierre el sistema
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
+        int error=0;
+        String nombre_cliente,email_cliente,telefono_cliente,direccion_cliente;
+        //obtenemos los datos del formulario
+        nombre_cliente=nombrecliente3.getText().trim();
+        email_cliente=emailcliente.getText().trim();
+        telefono_cliente=telefonocliente.getText().trim();
+        direccion_cliente=direccioncliente.getText().trim();
+        //validamos que no esten vacios losc ampos
+        if(nombre_cliente.equals("")){
+            nombrecliente3.setBackground(Color.red);
+            error=error+1;
+        }
+        
+           if(email_cliente.equals("")){
+            emailcliente.setBackground(Color.red);
+            error=error+1;
+        }
+           
+        if(telefono_cliente.equals("")){
+            telefonocliente.setBackground(Color.red);
+            error=error+1;
+        }
+              
+        if(direccion_cliente.equals("")){
+            direccioncliente.setBackground(Color.red);
+            error=error+1;
+        }
+        //si no hay errores procedemos a hacer la insercion de los registros en l db
+        if(error==0){
+          
+                try{
+                                                                   //creamos el objeto de conexion cada que creamos una nueva conexion y cerramos otra se debe cambiar la variable cn eneste caso pusimos cn2 al igual que el pst le pusimos pst2
+                                                                   Connection cn=Conexion.conectar();
+                                                                   // validamos si existe el usuario que trata de loguearse
+                                                                   PreparedStatement pst2 = cn.prepareStatement("INSERT INTO clientes (nombre_cliente, email_cliente, tel_cliente, dir_cliente, ultima_modificacion) values(?,?,?,?,?)");
+                                                                    pst2.setString(1, nombre_cliente);
+                                                                    pst2.setString(2, email_cliente);
+                                                                    pst2.setString(3, telefono_cliente);
+                                                                    pst2.setString(4, direccion_cliente);
+                                                                    pst2.setString(5, user_logueado);
+                                                                    
+                                                                    //ejecutamos el query
+                                                                    pst2.executeUpdate();
+
+                                                                    //cerramos la conexion
+                                                                    cn.close();
+                                                                    //llamamos al metodo que creamos de limpiar campos para que pinte un backrong verde y limpie campos
+                                                                    limpiarCampos();
+                                                                   
+                                                                    
+                                                                    JOptionPane.showMessageDialog(rootPane,"cliente creado satisfactoriamente");
+                                                                    //le decimos que esta interface la cierre para reducisir recursos del pc
+                                                                    this.dispose();
+                                                        }catch(SQLException e){
+                                                               System.err.println("Error todos los campos estan bien para agregar cliente panel RegistarClientes "+e);
+                                                               JOptionPane.showMessageDialog(rootPane,"error al crear cliente ");
+                                                        }
+
+            
+            
+            
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "debes diligenciar todos los campos");
+        }
+        
+        
+        
+        
+        
+        
+        
+        
     }//GEN-LAST:event_btncrearclienteActionPerformed
 
+    //creamos la funcion para limpiar campos cuando ya todo esta listo
+    public void limpiarCampos(){
+        //limpiamos los campos y le ponemos un background verde
+        nombrecliente3.setText("");
+        nombrecliente3.setBackground(Color.green);
+        emailcliente.setText("");
+        emailcliente.setBackground(Color.green);
+        telefonocliente.setText("");
+        telefonocliente.setBackground(Color.green);
+        direccioncliente.setText("");
+        direccioncliente.setBackground(Color.green);
+    }
     /**
      * @param args the command line arguments
      */

@@ -40,8 +40,8 @@ import static ventanas.Login.tipo_user;
 public class Capturista extends javax.swing.JFrame {
     //para poner la variable de sesion de login variable estatica
 String  user_logueado;
-//creamos la variable del nombre del usaurio logueado con el query encontrar user_logueado
-String nombre_usuario_logueado;
+//creamos la variable del nombre del usaurio logueado con el query encontrar user_logueado la creamos estatica para que llegue a una visat de registar usuario que requiere el nombre de quien crea el usuario
+public static String nombre_usuario_logueado;
 //esta la sacamos desde login para si es adin cuando cierre esta ventana no se cierre la de admin pero si es capturista y cierra la ventana ahi si se cierre
 int tipo_user=0;
     /**
