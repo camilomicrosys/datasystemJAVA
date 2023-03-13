@@ -175,14 +175,17 @@ int tipo_user=0;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btngestionarclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngestionarclienteActionPerformed
-        // TODO add your handling code here:
+         //ABRIMOS LA INTEFACE DEL gestioanr cliente creando un objeto de la interface registercliente
+          GestinarClientes gestioncliente= new  GestinarClientes();
+        //mostramos la interface
+        gestioncliente.setVisible(true);
     }//GEN-LAST:event_btngestionarclienteActionPerformed
 
     private void btnaddcliente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddcliente2ActionPerformed
         
        
                 
-                  //ABRIMOS LA INTEFACE DEL REGISTER USER creando un objeto de la interface registeruser
+         //ABRIMOS LA INTEFACE DEL REGISTER USER creando un objeto de la interface registeruser
          RegistarClientes registrarclientes= new  RegistarClientes();
         //mostramos la interface
         registrarclientes.setVisible(true);
