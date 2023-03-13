@@ -46,6 +46,8 @@ public class GestionUser extends javax.swing.JFrame {
         
         //matamos proceso cuando se loguean destruimos la ejecucion de login para que solo siga esta ventana actual funcionando y ya no se ejecutaria en segundo plano
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //evitamos que al cerar este modal que no es el sistema pricipal evitamos que se nos cierre el sistema
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         //ponemos el fondo a la pantalla
          ImageIcon wallpaper= new ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\wallpaperPrincipal.jpg");

@@ -13,9 +13,25 @@ import java.sql.SQLException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.WindowConstants;
+//importamos esto de pdf
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+//esto para manejar insersion de imagenes 
+import com.itextpdf.text.Chunk;
+
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Font;
 
 //importamos la variable de sesion que viene por login
 import static ventanas.Login.user;
+//obtenemos tipo de user que se esta logueando donde 1 es admin 2 capturista
+import static ventanas.Login.tipo_user;
+
 
 /**
  *
@@ -24,17 +40,23 @@ import static ventanas.Login.user;
 public class Capturista extends javax.swing.JFrame {
     //para poner la variable de sesion de login variable estatica
 String  user_logueado;
-//creamos la variable del nombre del usaurio logueado con el query contra user_logueado
+//creamos la variable del nombre del usaurio logueado con el query encontrar user_logueado
 String nombre_usuario_logueado;
+//esta la sacamos desde login para si es adin cuando cierre esta ventana no se cierre la de admin pero si es capturista y cierra la ventana ahi si se cierre
+int tipo_user=0;
     /**
      * Creates new form Capturista
      */
     public Capturista() {
         initComponents();
         user_logueado=Login.user;
+        //miramos que rol de gente esta logueado para segun rol destruir la ventana anterior si es capturista se destruye login , si es admin no se destruye nada, ya que el user podra cerrar esta ventana
+        //y no finalizar el sistema
+        tipo_user=Login.tipo_user;
+        String tipo_string = Integer.toString(tipo_user);
         
         //titulo de la intefaz de login
-        setTitle("Panel capturista user logueado: "+user_logueado);
+        setTitle("Panel capturista user logueado: "+user_logueado+"rol "+tipo_string);
         //centrar la interface en la pantalla
         setLocationRelativeTo(null);
            //TAMANP DE PANTALLA
@@ -51,6 +73,11 @@ String nombre_usuario_logueado;
           //matamos proceso cuando se loguean destruimos la ejecucion de login para que solo siga esta ventana actual funcionando y ya no se ejecutaria en segundo plano
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
+        //si es admin y ciera la ventana evitamos que se finalize el programa
+        //esto evita que se finalize el programa cuando cierrren esta ventana
+        if(tipo_user==1){
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        }
         //obtenemos el nombre del usuario nolgueado para mostrarlo en la interface que se abre
          //aca nos conectamos a la db para validar que usuario es el que ah inicado sesion en el sistema
         try{

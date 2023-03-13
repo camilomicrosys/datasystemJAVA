@@ -21,6 +21,9 @@ public class Login extends javax.swing.JFrame {
 
     //se crean las variables estaticas para poder enviar datos entre interfaces en este caso solo el user
     public static String user="";
+    //creo otra estatica para mandarla a las vistas de paneles de administracion para si son admins validar si se cierran las ventanas que se abren o no
+    //por ejemplo sia dmin entra a capturista y cierra no dbe finalizar el programa pero si entra capturista a capturista debe cerrarse el programa
+    public static int tipo_user;
     String pass="";
     /**
      * Creates new form Login
@@ -145,18 +148,21 @@ public class Login extends javax.swing.JFrame {
                                         String estatus=rs.getString("estatus");
                                        //validaos que roll tiene el usuario que se esta logueando
                                        if(tipo_nivel.equals("administrador")&& estatus.equals("activo")){
+                                           tipo_user=1;
                                          //esto lo que hace es que destruye en el sistema operativo la intefaz d elogin para poder interactuar con la siguiente vista de formulario
                                          dispose();
                                          //abrimos interface de administrador
                                          new Administrador().setVisible(true);
                                            
                                        }else if(tipo_nivel.equals("capturista")&& estatus.equals("activo")){
+                                           tipo_user=2;
                                             //esto lo que hace es que destruye en el sistema operativo la intefaz d elogin para poder interactuar con la siguiente vista de formulario
                                          dispose();
                                          //abrimos interface de Capturista
                                          new Capturista().setVisible(true);
                                            
                                        }else if(tipo_nivel.equals("tecnico")&& estatus.equals("activo")){
+                                           tipo_user=3;
                                          //esto lo que hace es que destruye en el sistema operativo la intefaz d elogin para poder interactuar con la siguiente vista de formulario
                                          dispose();
                                          //abrimos interface de Tecnico

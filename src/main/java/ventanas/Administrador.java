@@ -166,6 +166,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(btnCreatividad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 110, 90));
 
         btnCapturista1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\capturista.png")); // NOI18N
+        btnCapturista1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapturista1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnCapturista1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 110, 90));
 
         btnTecnico1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\tecnico.png")); // NOI18N
@@ -190,6 +195,12 @@ public class Administrador extends javax.swing.JFrame {
         //mostramos la interface
         gestionarusers.setVisible(true);
     }//GEN-LAST:event_btnGestionarUser1ActionPerformed
+
+    private void btnCapturista1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapturista1ActionPerformed
+       
+           //abrimos interface de Capturista
+          new Capturista().setVisible(true);
+    }//GEN-LAST:event_btnCapturista1ActionPerformed
 
     /**
      * @param args the command line arguments
