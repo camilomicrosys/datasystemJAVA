@@ -53,10 +53,10 @@ int tipo_user=0;
         //miramos que rol de gente esta logueado para segun rol destruir la ventana anterior si es capturista se destruye login , si es admin no se destruye nada, ya que el user podra cerrar esta ventana
         //y no finalizar el sistema
         tipo_user=Login.tipo_user;
-        String tipo_string = Integer.toString(tipo_user);
+       
         
         //titulo de la intefaz de login
-        setTitle("Panel capturista user logueado: "+user_logueado+"rol "+tipo_string);
+        setTitle("Panel capturista user logueado: "+user_logueado);
         //centrar la interface en la pantalla
         setLocationRelativeTo(null);
            //TAMANP DE PANTALLA
@@ -163,6 +163,11 @@ int tipo_user=0;
         getContentPane().add(btnimprimirclientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 100, 70));
 
         btnaddcliente2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\add.png")); // NOI18N
+        btnaddcliente2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaddcliente2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnaddcliente2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 100, 70));
         getContentPane().add(fondopanelcapturista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 220));
 
@@ -172,6 +177,16 @@ int tipo_user=0;
     private void btngestionarclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngestionarclienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btngestionarclienteActionPerformed
+
+    private void btnaddcliente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddcliente2ActionPerformed
+        
+       
+                
+                  //ABRIMOS LA INTEFACE DEL REGISTER USER creando un objeto de la interface registeruser
+         RegistarClientes registrarclientes= new  RegistarClientes();
+        //mostramos la interface
+        registrarclientes.setVisible(true);
+    }//GEN-LAST:event_btnaddcliente2ActionPerformed
 
     /**
      * @param args the command line arguments
