@@ -4,10 +4,34 @@
  */
 package ventanas;
 
+import clases.Conexion;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.WindowConstants;
+
+//importamos esto de pdf
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+//esto para manejar insersion de imagenes 
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+//para la tabla
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import static ventanas.Login.user;
  //importamos el nombre del usuario logueado que es quien va a registarar este cliente y viene desde la vista capturista
@@ -29,7 +53,17 @@ public class InformacionCliente extends javax.swing.JFrame {
     String user_logueado;
     //para recibir la variable estatica del id del cliente a modificar que viene de vista gestionarclientes
     int id_clientes;
+    //declaramos una variable id equipo statica para mas adelante mandarla a otrainterface en a tabla cuando clikeen un equipo
+    public static int id_equipo_edit;
+    //creamos ota estatica para que viaje el nombre del cliente a la vista que lo requiera llamar en este caso la de registrar clientes
+    public static String nombre_cliente_global;
 
+     //creamos el objeto del datatable esto lo que nos va a permitir es modificar datos de la tabla a su interior para los quipos del usuario
+     DefaultTableModel model=new DefaultTableModel();
+     
+ 
+     
+    
     /**
      * Creates new form InformacionCliente
      */
@@ -49,8 +83,7 @@ public class InformacionCliente extends javax.swing.JFrame {
         //esto es para yo validar en el titulo a ver si si me llega el id que vamosa  editar
         String cliente_editar_Str = String.valueOf(id_clientes);
         
-        //titulo de la intefaz de login
-        setTitle("Panel Adminitrador sesion de -"+user+" nombre "+user_logueado+" id a editar"+cliente_editar_Str);
+        //
         //centrar la interface en la pantalla
         setLocationRelativeTo(null);
         
@@ -72,6 +105,124 @@ public class InformacionCliente extends javax.swing.JFrame {
         fondoinformacioncliente.setIcon(icono);
         //esta se pone para que aplique los cambios
         this.repaint();
+        
+         //obtenemos los datos del cliente que se clikeo con en la vista gestionar cliente en la tabla con su id
+        try{
+              //creamos el objeto de conexion 
+                                   Connection cn=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse
+                                    String sql = "SELECT * FROM clientes WHERE id=?";
+                                    
+                                    PreparedStatement pst = cn.prepareStatement(sql);
+                                        pst.setInt(1, id_clientes);
+                                   //obtenemos los datos del query
+                                   ResultSet rs = pst.executeQuery();
+                                   //si existen datos con la cosnulta
+                                   if(rs.next()){
+                                       //ponemos el titulo de la interface rs get string obtiene el dato con el nombre de la tabla de la db
+                                       setTitle("Informacion del cliente"+rs.getString("nombre_cliente")+" - sesion de: "+nombre_usuario_logueado);
+                                       jLabel7.setText("informacion del cliente: "+rs.getString("nombre_cliente"));
+                                       
+                                       //llenamos los inputs de la la vista 
+                                       infoclientenombres.setText(rs.getString("nombre_cliente"));
+                                       infoclientemail.setText(rs.getString("email_cliente"));
+                                       infoclientetelefono.setText(rs.getString("tel_cliente"));
+                                       infoclientedireccion.setText(rs.getString("dir_cliente"));
+                                       infoclientemodificadopor.setText(rs.getString("ultima_modificacion"));
+                                       //llenamos la variable estatica para poder enviala a las vistas que la requieran
+                                       nombre_cliente_global=rs.getString("nombre_cliente");
+                                       
+                                   }
+                                  //cerramos la conexion
+                                   cn.close();
+            
+        }catch (SQLException e) {
+            System.err.println("error al cosultar interface informacion cliente: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        
+        //hacemos el otro query para sacar los datos del equipo registrado
+        
+         try{
+                                 //creamos el objeto de conexion 
+                                   Connection cn2=Conexion.conectar();
+                                  // validamos si existe el usuario que trata de loguearse
+                                    String sql2 = "SELECT id,tipo_equipo,marca,estatus FROM equipos WHERE id_cliente=?";
+                                    
+                                    PreparedStatement pst2 = cn2.prepareStatement(sql2);
+                                        pst2.setInt(1, id_clientes);
+                                   //obtenemos los datos del query
+                                   ResultSet rs2 = pst2.executeQuery();
+                               
+                                      tableinfoclientess= new JTable(model);
+                                      //le indicamos que la table_usuarios es la que va estar dentro del panel de la tabla o sea la interfacesiata d etabla
+                                    //ademas esta linea hace un scroll si jay muchos registros en la consulta saca el scroll
+                                    jScrollPane1.setViewportView(tableinfoclientess);
+                                   
+                                    //colocamos los nombres de las columans de las tablas la primera se deja vacia que es el id esa la llenamos abajo con eñ 1+1
+                                    model.addColumn(" ");
+                                    model.addColumn("tipo_equipo");
+                                    model.addColumn("marca");
+                                    model.addColumn("estatus");
+                                      //validamos que haya datos
+                                    while(rs2.next()){
+                                        //creamos un vector object para mostrar los datos de la tabla ponemos 5 haciendo referencia a las 6 columnas que creamos anteriormente
+                                        Object[] fila= new Object[4];
+                                        //hacemos un recorrido de las fila las 5 columas por eso hasta que sea menor a 5
+                                        for(int i=0;i<4;i++){
+                                            //este es el indice ne la tabla
+                                            fila[i]=rs2.getObject(i+1);
+                                            
+                                        }
+                                        //aca agregariamos a nuestra fila lo que vamos encontrando en el foreach
+                                        model.addRow(fila);
+                                       System.err.println("entraste por aca ");
+                                      
+                                    }
+                                    
+                                       
+                                   
+                                  //cerramos la conexion
+                                   cn2.close();
+            
+        }catch (SQLException e) {
+            System.err.println("error al cosultar interface informacion cliente: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+         //ahora obtenemos el id del equipo que se clickee cuando den clic en alguna fila de la tabla de los equipos
+          //esto es para obtener los datos del usuario que se clikee en el front de la tabla
+            tableinfoclientess.addMouseListener(new MouseAdapter(){
+                  @Override  
+                  public void mouseClicked(MouseEvent e){
+                //obtenemos cual es la fila que se clikeo
+                      int fila_point=tableinfoclientess.rowAtPoint(e.getPoint());
+                      //ponemos 0 quemado ya que trabajaremos con la columna de id en la tabla pintada, por ejemplo en la vista gestioanr users 
+                      //podemos ir a esa visat y vemos este mismo codigo alla quemaban 2 ya que la tabla visual en la columna 2 era el nombre del cliente y liego trabajabamos el query ent la otra vista con ese nombre de usuario
+                      //pero en este mandamos el id statico a la otra interface
+                      int columna_point=0;
+                       //no pueden haber negativos y la primera es cero ya que son array
+                            if(fila_point>-1){
+                                //aca obtenemos el id real que se clikeo
+                                id_equipo_edit=(int)model.getValueAt(fila_point, columna_point);
+                                JOptionPane.showMessageDialog(rootPane, id_equipo_edit);
+                                /*
+                                aca mostrariamos la siguiente interface que es la para editar el equipo al cual se le dio click
+                                creamos el objeto de la otra interfce donde veremos la info de este usuario
+                                InformacionCliente informacion_clientes= new InformacionCliente();
+                                // y abrimos esa nueva interface
+                                informacion_clientes.setVisible(true);
+                                */
+                                
+                            }
+
+                    }
+          });
+        
+        
+        
+        
     }
 
     /**
@@ -133,7 +284,6 @@ public class InformacionCliente extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Informacion del cliente");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 380, 50));
 
         tableinfoclientess.setModel(new javax.swing.table.DefaultTableModel(
@@ -164,6 +314,11 @@ public class InformacionCliente extends javax.swing.JFrame {
 
         btnregistrarequipo1.setText("Registar equipo");
         btnregistrarequipo1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnregistrarequipo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnregistrarequipo1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnregistrarequipo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 220, 130, 30));
 
         btnimprimirclientex.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\impresora.png")); // NOI18N
@@ -172,6 +327,13 @@ public class InformacionCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnregistrarequipo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnregistrarequipo1ActionPerformed
+         //ABRIMOS LA INTEFACE DEL GestionaUser creando un objeto de la interface Gestionar User
+        RegistarEquipo registar_equipo= new RegistarEquipo();
+        //mostramos la interface
+        registar_equipo.setVisible(true);
+    }//GEN-LAST:event_btnregistrarequipo1ActionPerformed
 
     /**
      * @param args the command line arguments
