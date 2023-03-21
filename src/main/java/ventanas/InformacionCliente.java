@@ -22,6 +22,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -57,7 +58,9 @@ public class InformacionCliente extends javax.swing.JFrame {
     public static int id_equipo_edit;
     //creamos ota estatica para que viaje el nombre del cliente a la vista que lo requiera llamar en este caso la de registrar clientes
     public static String nombre_cliente_global;
-
+    //campos del formulario actualizar el cliente
+    String nombre_info_cliente,email_info_cliente,telefono_info_cliente,direccion_info_clientes;
+    
      //creamos el objeto del datatable esto lo que nos va a permitir es modificar datos de la tabla a su interior para los quipos del usuario
      DefaultTableModel model=new DefaultTableModel();
      
@@ -310,6 +313,11 @@ public class InformacionCliente extends javax.swing.JFrame {
 
         btnActualizarcliente.setText("Actualizar cliente");
         btnActualizarcliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnActualizarcliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarclienteActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnActualizarcliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 260, 130, 30));
 
         btnregistrarequipo1.setText("Registar equipo");
@@ -334,6 +342,88 @@ public class InformacionCliente extends javax.swing.JFrame {
         //mostramos la interface
         registar_equipo.setVisible(true);
     }//GEN-LAST:event_btnregistrarequipo1ActionPerformed
+
+    private void btnActualizarclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarclienteActionPerformed
+        //obtenemos los datos del formulario y validamos que no esten vacios
+        int errores=0;
+        nombre_info_cliente= infoclientenombres.getText().trim();
+        email_info_cliente=infoclientemail.getText().trim();
+        telefono_info_cliente=infoclientetelefono.getText().trim();
+        direccion_info_clientes=infoclientedireccion.getText().trim();
+        
+        //validamos que no esten vacios
+        if(nombre_info_cliente.equals("")){
+            infoclientenombres.setBackground(Color.red);
+            errores=errores+1;
+        }
+        
+        
+        if(email_info_cliente.equals("")){
+            infoclientemail.setBackground(Color.red);
+            errores=errores+1;
+        }
+        
+        
+        if(telefono_info_cliente.equals("")){
+            infoclientetelefono.setBackground(Color.red);
+            errores=errores+1;
+        }
+        
+        if(direccion_info_clientes.equals("")){
+            infoclientedireccion.setBackground(Color.red);
+            errores=errores+1;
+        }
+        
+        //validamos si hay errores
+        if(errores==0){
+            //hacemos el update a la tabla users
+            
+              try{
+                                                                   //creamos el objeto de conexion cada que creamos una nueva conexion y cerramos otra se debe cambiar la variable cn eneste caso pusimos cn2 al igual que el pst le pusimos pst2
+                                                                   Connection cn2=Conexion.conectar();
+                                                                   // validamos si existe el usuario que trata de loguearse
+                                                                   PreparedStatement pst2 = cn2.prepareStatement("UPDATE clientes set nombre_cliente=?,email_cliente=?,tel_cliente=?,dir_cliente=?,ultima_modificacion=? WHERE  id=?");
+                                                                   //mandamos los datos pusimos 8 signos ? que son 8 columas de la db a la primera que es id mandamos 0 opara que ya el sistema asigne su auto increment
+                                                                    
+                                                                    pst2.setString(1, nombre_info_cliente);
+                                                                    pst2.setString(2, email_info_cliente);
+                                                                    pst2.setString(3, telefono_info_cliente);
+                                                                    pst2.setString(4, direccion_info_clientes);
+                                                                    pst2.setString(5, user_logueado);
+                                                                    pst2.setInt(6, id_clientes);
+                                                                    // ejecutamos el query de insercion
+                                                                    pst2.executeUpdate();
+                                                                    //cerramos la conexion
+                                                                    cn2.close();
+                                                                   
+                                                                    //en el codigo anterior limpiamos los campos y en este ponemos el backgron den verde en los campos
+                                                                    infoclientenombres.setBackground(Color.green);
+                                                                    infoclientemail.setBackground(Color.green);
+                                                                    infoclientetelefono.setBackground(Color.green);
+                                                                    infoclientedireccion.setBackground(Color.green);
+                                                                   
+                                                                    
+                                                                    
+        
+                                                                    
+                                                                    JOptionPane.showMessageDialog(rootPane,"Cliente actualizado correctamente");
+                                                                    //le decimos que esta interface la cierre para reducisir recursos del pc
+                                                                    this.dispose();
+                                                        }catch(SQLException e){
+                                                               System.err.println("error al actualziar cliente panel informacion cliente "+e);
+                                                               JOptionPane.showMessageDialog(rootPane,"error al actualizar cliente");
+                                                        }
+
+            
+            
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "debes diligenciar todos los campos");  
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_btnActualizarclienteActionPerformed
 
     /**
      * @param args the command line arguments
