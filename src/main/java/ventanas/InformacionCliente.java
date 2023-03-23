@@ -15,17 +15,23 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
-//esto para manejar insersion de imagenes 
+//esto para manejar insersion de imagenes al pdf
 import com.itextpdf.text.Chunk;
+
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
+
+
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -330,6 +336,11 @@ public class InformacionCliente extends javax.swing.JFrame {
         getContentPane().add(btnregistrarequipo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 220, 130, 30));
 
         btnimprimirclientex.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\impresora.png")); // NOI18N
+        btnimprimirclientex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnimprimirclientexActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnimprimirclientex, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 90, 80));
         getContentPane().add(fondoinformacioncliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 389));
 
@@ -424,6 +435,142 @@ public class InformacionCliente extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnActualizarclienteActionPerformed
+
+    private void btnimprimirclientexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimprimirclientexActionPerformed
+      //con estas lineas y la importacion es que podemos generar el archivo pdf Document es propio de la libreria pdf
+       Document documento= new Document();
+        try{
+            //esto va fijo esto obtiene el nombre del user del equipo doncde se esta ejecutando el sistema
+            String ruta=System.getProperty("user.home");
+            //damos la ruta donde queremos guardar el archivo que se genere al presioanr el boton de generar reporte
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta+"/Desktop/clientes_equipos.pdf"));
+            //ruta donde esta la imagen que voy a ponerle al pdf
+          //En este archivo no se importa la libreria de image por que al haber otra importada que termina en image entra en conflicto entonces se deja asi sola video 83 explica este conflicto y el por que no se importa aca
+            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\BannerPDF.jpg");
+            //escala de visualizacion de la imagen
+            header.scaleToFit(650,1000);
+            //la alineamos al centro
+            header.setAlignment(Chunk.ALIGN_CENTER);
+            
+            //agregamos el parrafo que queremos mostarr en pantalla
+            Paragraph parrafo = new Paragraph();
+            parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo.add("Informacion del cliente \n\n");
+            parrafo.setFont(FontFactory.getFont("Tahoma",14,Font.BOLD,BaseColor.DARK_GRAY));
+            parrafo.add("Cliente registrado \n\n");
+            
+            //abrimos el docu para trabajarlo
+            documento.open();
+            //agregamos la imagen y el parrafo
+            documento.add(header);
+            documento.add(parrafo);
+            
+            //le decimos que tenemos 5 columnas
+            PdfPTable tabla= new PdfPTable(5);
+            //esto es para escribir celdas entonces iniciamos con los encabezados
+            tabla.addCell("ID");
+            tabla.addCell("Nombre");
+            tabla.addCell("Email");
+            tabla.addCell("Telefono");
+            tabla.addCell("Direccion");
+            
+            
+                        //ahora creamos la conexion
+                         try{
+                        //conexion a base de datos
+                        Connection cn=Conexion.conectar();
+                        PreparedStatement pst = cn.prepareStatement("SELECT * FROM clientes where id='" + id_clientes + "'");
+                        //obtenemos los datos
+                        ResultSet rs = pst.executeQuery();
+                        
+                        //si encuentra datos
+                        if(rs.next()){
+                           do{
+                               
+                               //empezamos agregar los registros de la db
+                               //LAS COLUMNAS DE DB 1 ES ID 2 NOMBRE y asi de la db
+                               tabla.addCell(rs.getString(1));
+                               tabla.addCell(rs.getString(2));
+                               tabla.addCell(rs.getString(3));
+                               tabla.addCell(rs.getString(4));
+                               tabla.addCell(rs.getString(5));
+                                 
+                               
+                           } while(rs.next());
+                          //CUANDO TERMINE DE AGREGARLOS AHORA SI LO METEMOS A LA TABLA
+                          documento.add(tabla);
+                           
+                           
+                        }
+                        
+                       
+                      //agaregamos un nuevo parrafo
+                      Paragraph parrafo2= new Paragraph();
+                      //le decimos que estara centrado
+                      parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
+                      parrafo2.add("\n \n Equipos registrados. \n \n");
+                      parrafo2.setFont(FontFactory.getFont("tahoma",14,Font.BOLD,BaseColor.DARK_GRAY));
+                      //le decimos que vamos agregar este parrafo al documento
+                      documento.add(parrafo2);
+                      //LE DECIMOS QUE quiero que tenga 4 columans esta tabla
+                      PdfPTable tablaEquiposs= new PdfPTable(4);
+                      
+                      //esto es para escribir celdas entonces iniciamos con los encabezados
+                      tablaEquiposs.addCell("ID Equipo");
+                      tablaEquiposs.addCell("Tipo");
+                      tablaEquiposs.addCell("Marca");
+                      tablaEquiposs.addCell("Estatus");
+                                //AHORA EJECUTAMOS UN QUERY PARA OBTENER LOS EQUIPOS DE ESTE CLIENTE
+                                try{
+                                    Connection cn2=Conexion.conectar();
+                                    PreparedStatement pst2=cn2.prepareStatement("SELECT id,tipo_equipo,marca,estatus from equipos where id_cliente='" + id_clientes + "'");
+                                    
+                                          //obtenemos los datos
+                                       ResultSet rs2 = pst2.executeQuery();
+
+                                       //si encuentra datos
+                                       if(rs2.next()){
+                                          do{
+
+                                              //empezamos agregar los registros de la db
+                                              //LAS COLUMNAS DE DB 1 ES ID 2 NOMBRE y asi de la db
+                                              tablaEquiposs.addCell(rs2.getString(1));
+                                              tablaEquiposs.addCell(rs2.getString(2));
+                                              tablaEquiposs.addCell(rs2.getString(3));
+                                              tablaEquiposs.addCell(rs2.getString(4));
+                                              
+
+
+                                          } while(rs2.next());
+                                         //CUANDO TERMINE DE AGREGARLOS AHORA SI LO METEMOS A LA TABLA
+                                         documento.add(tablaEquiposs);
+
+
+                                       }
+                                    
+                                    
+                                }catch(SQLException e){
+                                   System.err.print("Error al obtener los equipos del cliente vista informacion cliente presionar impresora "+e); 
+                                }
+                      
+
+
+                    }catch(SQLException e){
+                      System.err.print("Error al obtener datos del cliente vista informacion cliente presionar impresora "+e);
+                    }
+                         
+                         
+            //cerramos el documento           
+            documento.close();
+            JOptionPane.showMessageDialog(rootPane, "Reporte generado exitosamente");
+         
+            //SI HAY ALGUNA EXCEPCION EN LA IMAGEN O DOCUMENTO DE GENERACION
+        }catch(DocumentException | IOException e){
+           System.err.print("error generado al presionar el boton imprimir en la vista informacioncliente "+e); 
+            
+        }        
+      
+    }//GEN-LAST:event_btnimprimirclientexActionPerformed
 
     /**
      * @param args the command line arguments
