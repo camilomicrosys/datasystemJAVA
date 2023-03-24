@@ -214,15 +214,19 @@ public class InformacionCliente extends javax.swing.JFrame {
                        //no pueden haber negativos y la primera es cero ya que son array
                             if(fila_point>-1){
                                 //aca obtenemos el id real que se clikeo
+                                //esta seria la variable estatica que viajaria a la otra vista
                                 id_equipo_edit=(int)model.getValueAt(fila_point, columna_point);
-                                JOptionPane.showMessageDialog(rootPane, id_equipo_edit);
-                                /*
-                                aca mostrariamos la siguiente interface que es la para editar el equipo al cual se le dio click
-                                creamos el objeto de la otra interfce donde veremos la info de este usuario
-                                InformacionCliente informacion_clientes= new InformacionCliente();
-                                // y abrimos esa nueva interface
-                                informacion_clientes.setVisible(true);
-                                */
+                               // JOptionPane.showMessageDialog(rootPane, id_equipo_edit);
+                                 //abrimos la interface de informacion del Equipo
+                                            InformacionEquipo infoequipo= new  InformacionEquipo();
+                                           //mostramos la interface
+                                           infoequipo.setVisible(true);
+                                
+                                
+                                
+                                
+                                
+                               
                                 
                             }
 
