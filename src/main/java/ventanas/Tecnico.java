@@ -121,6 +121,11 @@ int tipo_user=0;
         getContentPane().add(nombresesionlogueado, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 220, 30));
 
         btngraficastatus.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\grafica.png")); // NOI18N
+        btngraficastatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btngraficastatusActionPerformed(evt);
+            }
+        });
         getContentPane().add(btngraficastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 100, 60));
 
         btngraficamarcasss.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\grafica.png")); // NOI18N
@@ -153,6 +158,12 @@ int tipo_user=0;
           new EquiposRegistrados().setVisible(true);
         
     }//GEN-LAST:event_btngestionarequipossActionPerformed
+
+    private void btngraficastatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngraficastatusActionPerformed
+        //mostramos la grafica de status
+        Graficastatus graficastatu= new Graficastatus();
+        graficastatu.setVisible(true);
+    }//GEN-LAST:event_btngraficastatusActionPerformed
 
     /**
      * @param args the command line arguments
