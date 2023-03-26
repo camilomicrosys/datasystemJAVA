@@ -124,15 +124,15 @@ public class EquiposRegistrados extends javax.swing.JFrame {
                                 //aca obtenemos el id real que se clikeo
                                 //esta seria la variable estatica que viajaria a la otra vista
                                 idEquipo_update=(int)model.getValueAt(fila_point, columna_point);
-                               JOptionPane.showMessageDialog(rootPane, idEquipo_update);
-                                 //abrimos la interface de informacion del Equipo
+                                //JOptionPane.showMessageDialog(rootPane, idEquipo_update);
+                                 //abrimos la interface de infoequipotecnico
                                  
-                                 /*
-                                            InformacionEquipo infoequipo= new  InformacionEquipo();
+                                 
+                                            Informacionequipotecnico infoequipo= new  Informacionequipotecnico();
                                            //mostramos la interface
                                            infoequipo.setVisible(true);
                                 
-                                */
+                              
                                 
                                 
                                 
@@ -284,15 +284,12 @@ public class EquiposRegistrados extends javax.swing.JFrame {
                                 //aca obtenemos el id real que se clikeo
                                 //esta seria la variable estatica que viajaria a la otra vista
                                 idEquipo_update=(int)model.getValueAt(fila_point, columna_point);
-                               JOptionPane.showMessageDialog(rootPane, idEquipo_update);
-                                 //abrimos la interface de informacion del Equipo
+                               //JOptionPane.showMessageDialog(rootPane, idEquipo_update);
+                                 //abrimos la interface de informacion equipo tecnico
                                  
-                                 /*
-                                            InformacionEquipo infoequipo= new  InformacionEquipo();
+                                Informacionequipotecnico infoequipo2= new  Informacionequipotecnico();
                                            //mostramos la interface
-                                           infoequipo.setVisible(true);
-                                
-                                */
+                                           infoequipo2.setVisible(true);
                                 
                                 
                                 
