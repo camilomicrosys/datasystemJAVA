@@ -108,11 +108,35 @@ int tipo_user=0;
     private void initComponents() {
 
         nombresesionlogueado = new javax.swing.JLabel();
+        btngraficastatus = new javax.swing.JButton();
+        btngraficamarcasss = new javax.swing.JButton();
+        btngestionarequiposs = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         fondostecnicoss = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(nombresesionlogueado, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 220, 30));
+        getContentPane().add(nombresesionlogueado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 220, 30));
+
+        btngraficastatus.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\grafica.png")); // NOI18N
+        getContentPane().add(btngraficastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 100, 60));
+
+        btngraficamarcasss.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\grafica.png")); // NOI18N
+        getContentPane().add(btngraficamarcasss, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 100, 60));
+
+        btngestionarequiposs.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\apoyo-tecnico.png")); // NOI18N
+        getContentPane().add(btngestionarequiposs, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 100, 60));
+
+        jLabel1.setText("Gestion de equipos");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 110, -1));
+
+        jLabel2.setText("Grafica de status");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 190, 90, -1));
+
+        jLabel3.setText("Grafica de Marcas");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 190, -1, -1));
         getContentPane().add(fondostecnicoss, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 505, 300));
 
         pack();
@@ -154,7 +178,13 @@ int tipo_user=0;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btngestionarequiposs;
+    private javax.swing.JButton btngraficamarcasss;
+    private javax.swing.JButton btngraficastatus;
     private javax.swing.JLabel fondostecnicoss;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel nombresesionlogueado;
     // End of variables declaration//GEN-END:variables
 }
