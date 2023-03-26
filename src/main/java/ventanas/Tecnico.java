@@ -129,6 +129,11 @@ int tipo_user=0;
         getContentPane().add(btngraficastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 100, 60));
 
         btngraficamarcasss.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\grafica.png")); // NOI18N
+        btngraficamarcasss.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btngraficamarcasssActionPerformed(evt);
+            }
+        });
         getContentPane().add(btngraficamarcasss, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 100, 60));
 
         btngestionarequiposs.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\apoyo-tecnico.png")); // NOI18N
@@ -164,6 +169,12 @@ int tipo_user=0;
         Graficastatus graficastatu= new Graficastatus();
         graficastatu.setVisible(true);
     }//GEN-LAST:event_btngraficastatusActionPerformed
+
+    private void btngraficamarcasssActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngraficamarcasssActionPerformed
+        //abrimos la ventana de garfico de marcas
+        Graficamarcas graficomarca = new Graficamarcas();
+        graficomarca.setVisible(true);
+    }//GEN-LAST:event_btngraficamarcasssActionPerformed
 
     /**
      * @param args the command line arguments
