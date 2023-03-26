@@ -118,7 +118,7 @@ int tipo_user=0;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(nombresesionlogueado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 220, 30));
+        getContentPane().add(nombresesionlogueado, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 220, 30));
 
         btngraficastatus.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\grafica.png")); // NOI18N
         getContentPane().add(btngraficastatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 100, 60));
@@ -127,6 +127,11 @@ int tipo_user=0;
         getContentPane().add(btngraficamarcasss, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 100, 60));
 
         btngestionarequiposs.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\apoyo-tecnico.png")); // NOI18N
+        btngestionarequiposs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btngestionarequipossActionPerformed(evt);
+            }
+        });
         getContentPane().add(btngestionarequiposs, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 100, 60));
 
         jLabel1.setText("Gestion de equipos");
@@ -141,6 +146,13 @@ int tipo_user=0;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btngestionarequipossActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngestionarequipossActionPerformed
+        // TODO add your handling code here:
+         //mostramos la interface de equipos registrados
+          new EquiposRegistrados().setVisible(true);
+        
+    }//GEN-LAST:event_btngestionarequipossActionPerformed
 
     /**
      * @param args the command line arguments
