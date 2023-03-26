@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.Icon;
+import java.awt.Color;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import static ventanas.Capturista.nombre_usuario_logueado;
 import static ventanas.Login.user;
@@ -239,7 +241,61 @@ public class InformacionEquipo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btninfoactualizarclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninfoactualizarclienteActionPerformed
-        // TODO add your handling code here:
+        //obtenemos los datos del formulario
+        String modelo_e=infoequiponombremodelo.getText();
+        String serie_e=infoequiponombreserie.getText();
+        String observaciones_e=observacionesinfoequipo.getText();
+        String estado_e=estatusequipo.getSelectedItem().toString();     
+        
+        //JOptionPane.showMessageDialog(rootPane, "la opcion seleccionada fue "+estado_e);
+        //para validar que losc ampos esten diligenciados
+        int error_e=0;
+        
+        if(modelo_e.equals("")){
+            infoequiponombremodelo.setBackground(Color.red);
+           error_e=error_e+1; 
+        }
+        
+        if(serie_e.equals("")){
+            infoequiponombreserie.setBackground(Color.red);
+           error_e=error_e+1; 
+        }
+        //si todo esta bien procedemos a actualizar los datos del equipo
+        if(error_e==0){
+                                try{
+                                 //creamos el objeto de conexion 
+                                                      Connection cn2=Conexion.conectar();
+                                                     // validamos si existe el usuario que trata de loguearse
+                                                       String sql2 ="UPDATE equipos set modelo=?,num_serie=?,observaciones=?,estatus=?,ultima_modificacion=? WHERE  id=?";
+
+                                                        
+                                    
+                                                        PreparedStatement pst2 = cn2.prepareStatement(sql2);
+                                                        pst2.setString(1,modelo_e);
+                                                        pst2.setString(2,serie_e);
+                                                        pst2.setString(3,observaciones_e);
+                                                        pst2.setString(4,estado_e);
+                                                        pst2.setString(5,user_logueado);
+                                                        pst2.setInt(6, id_equipo_editar);
+
+                                                        pst2.executeUpdate();
+                                                        cn2.close();
+                                    
+                                    JOptionPane.showMessageDialog(rootPane, "Actualizacion exitosa");
+                                    //CON ESTO CERRAMOS LA VENTANA ACTUAL A PENAS ACTUALIZE EL EQUIPO
+                                    dispose();
+
+                           }catch (SQLException e) {
+                               System.err.println("error al actualziar datos del equipo vista informacion Euipo  " + e.getMessage());
+                               e.printStackTrace();
+                           }
+            
+            
+            
+            
+        }else{
+         JOptionPane.showMessageDialog(rootPane, "Todos los campos deben estar Diligenciados");   
+        }
     }//GEN-LAST:event_btninfoactualizarclienteActionPerformed
 
     /**
