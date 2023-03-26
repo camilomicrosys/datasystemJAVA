@@ -87,7 +87,7 @@ public class Graficamarcas extends javax.swing.JFrame {
                                               Acer=vector_marcas_cantidad[posicion];
                                           }else if(vector_marcas_nombre[posicion].equals("hp")){
                                               hp=vector_marcas_cantidad[posicion];
-                                          }else if(vector_marcas_nombre[posicion].equals("Lenovo")){
+                                          }else if(vector_marcas_nombre[posicion].equals("lenovo")){
                                               Lenovo=vector_marcas_cantidad[posicion];
                                           }else if(vector_marcas_nombre[posicion].equals("Samsumg")){
                                               Samsumg=vector_marcas_cantidad[posicion];
@@ -107,6 +107,67 @@ public class Graficamarcas extends javax.swing.JFrame {
         
         
         
+    }
+    
+    //creamos este metodo que es el que dibujara la grafica
+     public void paint(Graphics g){
+        super.paint(g);
+        
+        //contamos el total de todas las marcas
+        int total_marcas=Acer+hp+Lenovo+Samsumg;
+        
+        //hacemos la formula para los gados de cada marca en la torta
+        int grados_acer=Acer*360/total_marcas;
+        int grados_hp=hp*360/total_marcas;
+        int grados_lenovo=Lenovo*360/total_marcas;
+        int grados_samsumg=Samsumg*360/total_marcas;
+        
+        //iniciamos a graficar
+        //marca acer
+            g.setColor(new Color(255,0,0));
+            //el arc dibuja una parte del ciculo damos posiciones y alturas 0 desde cero grados hasta grados color rojo
+            g.fillArc(25, 100, 270, 270, 0,grados_acer);
+            //digujamos el cuadrito de rectangulo con su cantidad
+              //ESTE PARA DIBUJAR APARTE UN CUADRITO CON EL COLOR
+            g.fillRect(310, 120, 20, 20);
+            //escribimos el texto sin nececidad de un label le pasamos el texto y las coordenadas donde queremos que se vea
+            g.drawString("marca Acer:"+Acer, 340 , 135);
+            
+             //marca hp
+            g.setColor(new Color(0,255,0));
+            //el arc dibuja una parte del ciculo damos posiciones y alturas 0 desde cero grados hasta grados color rojo
+            g.fillArc(25, 100, 270, 270, grados_acer,grados_hp);
+            //digujamos el cuadrito de rectangulo con su cantidad
+              //ESTE PARA DIBUJAR APARTE UN CUADRITO CON EL COLOR
+            g.fillRect(310, 150, 20, 20);
+            //escribimos el texto sin nececidad de un label le pasamos el texto y las coordenadas donde queremos que se vea
+            g.drawString("marca hp:"+hp, 340 , 165);
+            
+            //marca lenovo
+            g.setColor(new Color(215,96,140));
+            //el arc dibuja una parte del ciculo damos posiciones y alturas 0 desde cero grados hasta grados color rojo
+            g.fillArc(25, 100, 270, 270, grados_acer+grados_hp,grados_lenovo);
+            //digujamos el cuadrito de rectangulo con su cantidad
+              //ESTE PARA DIBUJAR APARTE UN CUADRITO CON EL COLOR
+            g.fillRect(310, 180, 20, 20);
+            //escribimos el texto sin nececidad de un label le pasamos el texto y las coordenadas donde queremos que se vea
+            g.drawString("marca lenovo:"+Lenovo, 340 , 195);
+            
+            //marca samsung
+            g.setColor(new Color(0,255,255));
+            //el arc dibuja una parte del ciculo damos posiciones y alturas 0 desde cero grados hasta grados color rojo
+            g.fillArc(25, 100, 270, 270, grados_acer+grados_hp+grados_lenovo,grados_samsumg);
+            //digujamos el cuadrito de rectangulo con su cantidad
+              //ESTE PARA DIBUJAR APARTE UN CUADRITO CON EL COLOR
+            g.fillRect(310, 210, 20, 20);
+            //escribimos el texto sin nececidad de un label le pasamos el texto y las coordenadas donde queremos que se vea
+            g.drawString("marca samsung :"+Samsumg, 340 , 225);
+            
+            
+        
+        
+        
+      
     }
 
     /**
