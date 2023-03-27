@@ -144,6 +144,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 400, -1, -1));
 
         btnAcercade.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\geekipedia.png")); // NOI18N
+        btnAcercade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcercadeActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnAcercade, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 110, 90));
 
         btnRegistarUser1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\addUser.png")); // NOI18N
@@ -211,6 +216,12 @@ public class Administrador extends javax.swing.JFrame {
           //abrimos interface de Tecnico
           new Tecnico().setVisible(true);
     }//GEN-LAST:event_btnTecnico1ActionPerformed
+
+    private void btnAcercadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercadeActionPerformed
+       //mostramos la vista acerca de 
+       Acercade acerca= new Acercade();
+       acerca.setVisible(true);
+    }//GEN-LAST:event_btnAcercadeActionPerformed
 
     /**
      * @param args the command line arguments
