@@ -11,6 +11,16 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.WindowConstants;
 import java.awt.Image;
+//para consumo de apis
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import javax.swing.JOptionPane;
+//esta toca instalarla en dependencias maven e el xmlo
+import org.json.JSONObject;
+
+
 import static ventanas.Login.user;
 /**
  *
@@ -168,6 +178,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(btnGestionarUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 110, 90));
 
         btnCreatividad1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\creatividad.png")); // NOI18N
+        btnCreatividad1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreatividad1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnCreatividad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 110, 90));
 
         btnCapturista1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\NetBeansProjects\\datasystem\\src\\main\\java\\imagenes\\capturista.png")); // NOI18N
@@ -222,6 +237,48 @@ public class Administrador extends javax.swing.JFrame {
        Acercade acerca= new Acercade();
        acerca.setVisible(true);
     }//GEN-LAST:event_btnAcercadeActionPerformed
+
+    private void btnCreatividad1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatividad1ActionPerformed
+        //probaremos el consumo de un api rest
+          try {
+            // Crear la conexión HTTP y configurar la petición
+            URL url = new URL("https://dog.ceo/api/breeds/image/random");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Content-Type", "application/json");
+
+            // Leer la respuesta de la API y convertirla en una cadena de texto
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String responseBody = "";
+            String line;
+            while ((line = in.readLine()) != null) {
+                responseBody += line;
+            }
+            in.close();
+
+            // Convertir la cadena JSON en un objeto Java
+            JSONObject jsonResponse = new JSONObject(responseBody);
+
+            // Obtener el valor de "message" esat es una propiedad del api
+            String message = jsonResponse.getString("message");
+            String respuesta_api=jsonResponse.getString("status");
+            
+
+            // Imprimir el valor de "message"
+            System.out.println("respuesta de la api en popiedad mensaje :"+message);
+            JOptionPane.showMessageDialog(rootPane, "respuesta de la api en prpiedad mensaje"+message);
+            //validamos si la respuesta del api fue exitosa
+            if(respuesta_api.equals("success")){
+               JOptionPane.showMessageDialog(rootPane, "El consumo de el api fue exitoso"); 
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+
+        
+    }//GEN-LAST:event_btnCreatividad1ActionPerformed
 
     /**
      * @param args the command line arguments

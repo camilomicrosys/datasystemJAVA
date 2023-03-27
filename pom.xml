@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
     <artifactId>datasystem</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>ejecutar</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,5 +27,11 @@
                   <artifactId>AbsoluteLayout</artifactId>
                   <version>RELEASE160</version>
             </dependency>
+        <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20210307</version>
+    </dependency>
+            
       </dependencies>
 </project>
